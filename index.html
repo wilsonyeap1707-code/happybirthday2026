@@ -237,7 +237,7 @@ function startFireworksLoop(){
             const dy=Math.sin(angle)*dist;
 
             p.style.left=centerX+"px";
-            p.style.top=innerHeight+"px";
+            p.style.top = (window.innerHeight * 0.85) + "px";
 
             p.animate([
                 {transform:"translate(0,0)",opacity:1},
@@ -255,3 +255,4 @@ function startFireworksLoop(){
 
 </body>
 </html>
+
