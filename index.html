@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>生日快乐</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont,"Segoe UI","Microsoft JhengHei",Arial,sans-serif;
+    background: radial-gradient(circle at top left,#1e3c72,#2a5298);
+    min-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 10vh;
+    color: #fff;
+    position: relative;
+}
+
+body::after{
+    content:"";
+    position:absolute;
+    width:200%;
+    height:200%;
+    box-shadow:
+        50px 50px 2px #fff,
+        150px 100px 2px #fff,
+        250px 200px 2px #fff,
+        400px 300px 2px #fff,
+        600px 50px 2px #fff,
+        700px 400px 2px #fff,
+        900px 150px 2px #fff,
+        1200px 350px 2px #fff;
+    animation: twinkle 3s infinite alternate;
+    z-index:0;
+}
+
+@keyframes twinkle {
+  0%{opacity:.2}
+  50%{opacity:.8}
+  100%{opacity:.2}
+}
+
+.card-container{
+    width:100%;
+    max-width:440px;
+    padding:12px;
+    perspective:1500px;
+    position:relative;
+    z-index:2;
+}
+
+.card{
+    width:100%;
+    position:relative;
+    transform-style:preserve-3d;
+    transition:transform 1.2s cubic-bezier(.4,.2,.2,1);
+}
+
+.card.open{
+    transform:rotateY(180deg);
+}
+
+.page{
+    width:100%;
+    background:#fff;
+    border-radius:18px;
+    box-shadow:0 25px 45px rgba(0,0,0,.15);
+    backface-visibility:hidden;
+    padding:32px;
+    box-sizing:border-box;
+    text-align:center;
+    color:#2b2b2b;
+}
+
+.front{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.back{
+    position:absolute;
+    top:0;
+    left:0;
+    transform:rotateY(180deg);
+}
+
+.hero-line{
+    font-size:13px;
+    letter-spacing:2px;
+    color:#1f4fd8;
+    margin-bottom:8px;
+    font-weight:600;
+}
+
+h1{
+    margin:10px 0;
+}
+
+p{
+    font-size:14px;
+    line-height:1.8;
+    color:#555;
+}
+
+button{
+    margin-top:28px;
+    padding:14px 36px;
+    font-size:15px;
+    border:none;
+    border-radius:30px;
+    background:linear-gradient(135deg,#1f4fd8,#e63946);
+    color:white;
+    cursor:pointer;
+    box-shadow:0 8px 20px rgba(31,79,216,.3);
+}
+
+button:hover{
+    transform:translateY(-2px);
+}
+
+.photo-row{
+    display:flex;
+    gap:14px;
+    margin-bottom:16px;
+    flex-wrap:wrap;
+}
+
+.photo-box{
+    flex:1;
+}
+
+.photo-box img{
+     width:100%;
+    height:160px;   /* 控制统一高度 */
+    object-fit: cover;
+    border-radius:12px;
+}
+
+.photo-box span{
+    display:block;
+    margin-top:6px;
+    font-size:12px;
+    color:#777;
+}
+
+.firework{
+    position:absolute;
+    width:4px;
+    height:4px;
+    border-radius:50%;
+    pointer-events:none;
+}
+
+/* 手机更舒服 */
+@media(max-width:480px){
+    h1{font-size:24px}
+    p{font-size:13px}
+    .page{padding:24px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="card-container">
+<div class="card" id="card">
+
+<div class="page front">
+    <div class="hero-line">A NEW CHAPTER</div>
+    <h1>生日快乐</h1>
+    <p>点一下，看看一路走来的你</p>
+    <button onclick="openCard()">OPEN</button>
+</div>
+
+<div class="page back">
+    <div class="photo-row">
+        <div class="photo-box">
+            <img src="child.jpg">
+            <span>小时候</span>
+        </div>
+        <div class="photo-box">
+            <img src="now.jpg">
+            <span>现在</span>
+        </div>
+    </div>
+
+    <div class="hero-line">HAPPY BIRTHDAY</div>
+    <h1>林颂喆</h1>
+    <p>
+    希望你在新的一岁里每天开心<br>
+    平安顺利，生活像阳光一样温暖<br><br>
+    梦想慢慢实现<br>
+    生日快乐，我的表弟！
+    </p>
+</div>
+
+</div>
+</div>
+
+<audio id="bgm" loop>
+<source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+function openCard(){
+    document.getElementById("card").classList.add("open");
+    const music=document.getElementById("bgm");
+    music.volume=0.45;
+    music.play();
+    startFireworksLoop();
+}
+
+function startFireworksLoop(){
+    const colors=["#ff3f3f","#ff9f1c","#fff600","#2eff8d","#3f7fff","#c93fff"];
+
+    function launch(){
+        const centerX=Math.random()<.5?Math.random()*300:innerWidth-Math.random()*300;
+        const peak=200+Math.random()*250;
+        const count=50+Math.random()*30;
+
+        for(let i=0;i<count;i++){
+            const p=document.createElement("div");
+            p.className="firework";
+            p.style.background=colors[Math.random()*colors.length|0];
+            p.style.width=p.style.height=(2+Math.random()*3)+"px";
+            document.body.appendChild(p);
+
+            const angle=Math.random()*Math.PI*2;
+            const dist=50+Math.random()*80;
+            const dx=Math.cos(angle)*dist;
+            const dy=Math.sin(angle)*dist;
+
+            p.style.left=centerX+"px";
+            p.style.top=innerHeight+"px";
+
+            p.animate([
+                {transform:"translate(0,0)",opacity:1},
+                {transform:`translate(0,-${peak}px)`,opacity:1},
+                {transform:`translate(${dx}px,-${peak+dy}px)`,opacity:0}
+            ],{duration:1800+Math.random()*600,easing:"ease-out"});
+
+            setTimeout(()=>p.remove(),2200);
+        }
+    }
+
+    setInterval(launch,500);
+}
+</script>
+
+</body>
+</html>
